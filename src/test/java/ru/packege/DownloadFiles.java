@@ -1,24 +1,35 @@
 package ru.packege;
 
 import com.codeborne.pdftest.PDF;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.xlstest.XLS;
 import com.opencsv.CSVReader;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.Csv;
 import org.openqa.selenium.By;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static com.codeborne.pdftest.assertj.Assertions.assertThat;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
 
 
-public class GitFile {
+public class DownloadFiles {
+
+    @BeforeAll
+    void Config(){
+        Configuration.browserSize = "1920x1080";
+
+    }
+
+
+
     @DisplayName("Файл, который нужно парсить")
     @Test
     void DownloadTestJUnit5Git() throws Exception {
@@ -28,10 +39,11 @@ public class GitFile {
             assertThat(new String(is.readAllBytes(), StandardCharsets.UTF_8)).contains("This repository");
         }
     }
-     /*String readString = Files.readString(downloadFile.toPath(), StandardCharsets.UTF_8);
-     Это более простая альтернатива, которая делает то же самое, что и код выше, но правильнее все-такие делать через try
-      */
-@DisplayName("Файл обычный ПДФ")
+
+    /*String readString = Files.readString(downloadFile.toPath(), StandardCharsets.UTF_8);
+    Это более простая альтернатива, которая делает то же самое, что и код выше, но правильнее все-такие делать через try
+     */
+    @DisplayName("Файл обычный ПДФ")
     @Test
     void DownloadTestPdf() throws Exception {
         Selenide.open("https://junit.org/junit5/docs/current/user-guide/");
@@ -43,6 +55,7 @@ public class GitFile {
         assertThat(pdf.author).contains("Marc");
         assertThat(pdf.numberOfPages).isEqualTo(166);
     }
+
     @DisplayName("Файл обычный Эксель")
     @Test
     void DownloadTestXls() throws Exception {
@@ -58,16 +71,33 @@ public class GitFile {
 //getSheet("Бумага для цветной печати");  - ищет по контенту в общем
 
 
-        }
-
-        @DisplayName("Большая удача найти Csv  в интернетах")
-        @Test
-    void privetCsv () throws Exception {
-    Selenide.open("https://support.staffbase.com/hc/en-us/articles/360007108391-CSV-File-Examples");
-    File downloadCsv = $(byText("Download: CSV File with the Minimum Data Set for Username Onboarding")).download();
-   CSVReader reader = new CSVReader(downloadCsv);
-
-        }
-
     }
+
+    @DisplayName("Большая удача найти Csv  в интернетах")
+    @Test
+    void PrivetCsv() throws Exception {
+        ClassLoader classLoader = DownloadFiles.class.getClassLoader(); // пишу название класса
+        try (InputStream is = classLoader.getResourceAsStream("username.csv");
+             CSVReader reader = new CSVReader(new InputStreamReader(is))) {
+            List<String[]> content = reader.readAll();
+            assertThat(content.get(4)).contains("jenkins46;9346;Mary;Jenkins");
+        }
+    }
+
+    @DisplayName("Прекрасный зип-файл нашла")
+    @Test
+    void ZipZip() throws Exception {
+        ClassLoader classLoader = DownloadFiles.class.getClassLoader();
+        // можно вынести в поле класса, если нужно ис-ть в нескольких тестах
+        try (InputStream is = classLoader.getResourceAsStream("sample-zip-file.zip");
+             ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry entry; //объявила переменную
+            //ниже пишу цикл while
+            while ((entry = zis.getNextEntry()) != null) {
+                assertThat(entry.getName()).isEqualTo("sample.txt");
+            }
+        }
+    }
+
+}
 
