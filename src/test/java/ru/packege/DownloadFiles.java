@@ -23,7 +23,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class DownloadFiles {
 
     @BeforeAll
-    void Config(){
+    static void config(){
         Configuration.browserSize = "1920x1080";
 
     }
@@ -32,7 +32,7 @@ public class DownloadFiles {
 
     @DisplayName("Файл, который нужно парсить")
     @Test
-    void DownloadTestJUnit5Git() throws Exception {
+    void downloadTestJUnit5Git() throws Exception {
         Selenide.open("https://github.com/junit-team/junit5/blob/main/README.md");
         File downloadFile = $("#raw-url").download();
         try (InputStream is = new FileInputStream(downloadFile)) {
@@ -45,7 +45,7 @@ public class DownloadFiles {
      */
     @DisplayName("Файл обычный ПДФ")
     @Test
-    void DownloadTestPdf() throws Exception {
+    void downloadTestPdf() throws Exception {
         Selenide.open("https://junit.org/junit5/docs/current/user-guide/");
         //  $(By.linkText("PDF download")).uploadFromClasspath("1.png"); - этоп росто пример загрузки файла
         // пишу название файла Path from source Root
@@ -58,7 +58,7 @@ public class DownloadFiles {
 
     @DisplayName("Файл обычный Эксель")
     @Test
-    void DownloadTestXls() throws Exception {
+    void downloadTestXls() throws Exception {
         Selenide.open("http://romashka2008.ru/price");
         File downloadXlsFile = $(".site-main__inner a[href*='prajs']").download();
         /// ВАЖНО "звездочка" * указывает на содержание в себе части контента $(".site-main__inner a[href*='prajs']")")
@@ -75,7 +75,7 @@ public class DownloadFiles {
 
     @DisplayName("Большая удача найти Csv  в интернетах")
     @Test
-    void PrivetCsv() throws Exception {
+    void privetCsv() throws Exception {
         ClassLoader classLoader = DownloadFiles.class.getClassLoader(); // пишу название класса
         try (InputStream is = classLoader.getResourceAsStream("username.csv");
              CSVReader reader = new CSVReader(new InputStreamReader(is))) {
@@ -86,7 +86,7 @@ public class DownloadFiles {
 
     @DisplayName("Прекрасный зип-файл нашла")
     @Test
-    void ZipZip() throws Exception {
+    void zipZip() throws Exception {
         ClassLoader classLoader = DownloadFiles.class.getClassLoader();
         // можно вынести в поле класса, если нужно ис-ть в нескольких тестах
         try (InputStream is = classLoader.getResourceAsStream("sample-zip-file.zip");
@@ -98,6 +98,7 @@ public class DownloadFiles {
             }
         }
     }
+
 
 }
 
