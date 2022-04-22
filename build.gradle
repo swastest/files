@@ -31,6 +31,8 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+// compileTestJava {options.encoding = 'UTF-8'} то же самое, что выше, но аккуратнее
+
 test {
     useJUnitPlatform()
 }
