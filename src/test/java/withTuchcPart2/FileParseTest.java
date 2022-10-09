@@ -29,10 +29,6 @@ public class FileParseTest {
             File downloadXlsFile = $(".site-main__inner a[href*='prajs']").download();
             /// ВАЖНО "звездочка" * указывает на содержание в себе части контента $(".site-main__inner a[href*='prajs']")")
             XLS xls = new XLS(downloadXlsFile);
-            xls.excel.getSheetAt(0)  // номер страницы(табы)
-                    .getRow(34)  // номер поля-строчки
-                    .getCell(2)   // номер столбца
-                    .getStringCellValue().contains("3 313,04 руб."); // содержит в себе
         assertThat(xls.excel.getSheetAt(0)  // номер страницы(табы)
                 .getRow(34)  // номер поля-строчки
                 .getCell(2)   // номер столбца
