@@ -53,7 +53,7 @@ public class DownloadFiles {
         PDF pdf = new PDF(downloadPdfFile);
         assertThat(pdf.text).contains("JUnit");
         assertThat(pdf.author).contains("Marc");
-        assertThat(pdf.numberOfPages).isEqualTo(166);
+        assertThat(pdf.numberOfPages).isEqualTo(179);
     }
 
     @DisplayName("Файл обычный Эксель")
