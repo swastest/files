@@ -19,9 +19,8 @@ dependencies {
             'com.codeborne:xls-test:1.4.0',  // работа с XLS здесь последняя версия несовместима с библиотечкой пдф, поэтому берем старую версию
             'com.opencsv:opencsv:5.6', // работа с CSV
             'com.codeborne:pdf-test:1.7.0', // работа с PDF
-          "org.slf4j:slf4j-simple:1.7.36",
+            "org.slf4j:slf4j-simple:1.7.36",
             'org.apache.logging.log4j:log4j-to-slf4j:2.16.0',
-            'org.testng:testng:7.5',
 
 
 // для работы xlsx файлов
@@ -45,5 +44,4 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
-    useTestNG()
 }

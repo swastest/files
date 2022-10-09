@@ -25,10 +25,7 @@ public class DownloadFiles {
     @BeforeAll
     static void config(){
         Configuration.browserSize = "1920x1080";
-
     }
-
-
 
     @DisplayName("Файл, который нужно парсить")
     @Test
@@ -45,7 +42,7 @@ public class DownloadFiles {
      */
     @DisplayName("Файл обычный ПДФ")
     @Test
-    void downloadTestPdf() throws Exception {
+    void downloadTestPdf() throws IOException {
         Selenide.open("https://junit.org/junit5/docs/current/user-guide/");
         //  $(By.linkText("PDF download")).uploadFromClasspath("1.png"); - этоп росто пример загрузки файла
         // пишу название файла Path from source Root
@@ -54,6 +51,8 @@ public class DownloadFiles {
         assertThat(pdf.text).contains("JUnit");
         assertThat(pdf.author).contains("Marc");
         assertThat(pdf.numberOfPages).isEqualTo(179);
+        assertThat(pdf.title).isEqualTo("JUnit 5 User Guide");
+       int a = 0;
     }
 
     @DisplayName("Файл обычный Эксель")
